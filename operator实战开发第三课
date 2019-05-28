@@ -1,0 +1,10 @@
+第三课
+1. 关于k8s常用lib库项目介绍
+   - client-go
+   - apiserver
+   
+client-go项目概览.
+client-go子项目主要是golang语言链接k8s服务端的客户端库,以及k8s中各种内部存储的实现的封装.
+
+apiserver项目概览
+apiserver子项目主要是k8s中关于k8s各种api的路由注册/接口实现/以及和etcd交互的接口封装.

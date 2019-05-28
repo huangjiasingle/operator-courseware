@@ -1,0 +1,54 @@
+第十课
+1. etcd-operator实战
+
+etcd 集群初始化 需要考虑 集群规模 镜像版本 证书验证 
+
+InitType static , etcd Discovery ,DNS Discovery
+
+我们主要实现static方式,如下
+
+etcd --name infra0 --initial-advertise-peer-urls http://10.0.1.10:2380 \
+  --listen-peer-urls http://10.0.1.10:2380 \
+  --listen-client-urls http://10.0.1.10:2379,http://127.0.0.1:2379 \
+  --advertise-client-urls http://10.0.1.10:2379 \
+  --initial-cluster-token etcd-cluster-1 \
+  --initial-cluster infra0=http://10.0.1.10:2380,infra1=http://10.0.1.11:2380,infra2=http://10.0.1.12:2380 \
+  --initial-cluster-state new
+
+etcd --name infra1 --initial-advertise-peer-urls http://10.0.1.10:2380 \
+  --listen-peer-urls http://10.0.1.10:2380 \
+  --listen-client-urls http://10.0.1.10:2379,http://127.0.0.1:2379 \
+  --advertise-client-urls http://10.0.1.10:2379 \
+  --initial-cluster-token etcd-cluster-1 \
+  --initial-cluster infra0=http://10.0.1.10:2380,infra1=http://10.0.1.11:2380,infra2=http://10.0.1.12:2380 \
+  --initial-cluster-state new
+
+etcd --name infra2 --initial-advertise-peer-urls http://10.0.1.10:2380 \
+  --listen-peer-urls http://10.0.1.10:2380 \
+  --listen-client-urls http://10.0.1.10:2379,http://127.0.0.1:2379 \
+  --advertise-client-urls http://10.0.1.10:2379 \
+  --initial-cluster-token etcd-cluster-1 \
+  --initial-cluster infra0=http://10.0.1.10:2380,infra1=http://10.0.1.11:2380,infra2=http://10.0.1.12:2380 \
+  --initial-cluster-state new
+
+
+etcd Discovery 
+
+DNS Discovery
+
+etcd集群的扩展
+
+动态添加节点 
+
+动态删除节点
+
+etcd 数据操作  处理备份和恢复的是否需要和operator在一个进程中. 
+
+备份数据 指定节点
+  
+恢复数据 指定节点
+
+用operator实现的方式;
+
+1. 借助statefulset的实现, statefulset的存储名称不会变, 访问方式可以直接通过podname.servicename的方式进行访问.
+2. pod+service的方式, 可以自己去实现pod的管理和业务逻辑的处理

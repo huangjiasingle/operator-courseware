@@ -1,0 +1,33 @@
+第四课
+1. 让我来聊聊什么是CRD和API Aggregation
+
+CRD是用户自定义的资源模型,是k8s原生的API的扩展,可以通过集群管理员向已有的k8s集群中动态的注册或者删除或者更新,对集群现有的资源不会有任何的影响,
+完全是插拔式的.一旦注册了某种CRD资源, 操作人员就可以想直接操作pod一样通过api或者kubectl很方便的操作, 就像pod,service等内部资源一样.
+
+自定义controller是一种控制器，用户可以在正在运行的集群上进行部署和更新，而与集群自身的生命周期无关。
+自定义控制器可以使用任何类型的资源，但与自定义资源结合使用时，它们尤其有效.
+
+通常CRD不会单独的存在,单独的存在也是没有任何意义的,通常会和controller配合使用,才能实现特定的功能. 才能成为向k8s内置的资源一样.
+一般的逻辑实现是在crd中指定用户期望的状态,然后controller通过监控crd的数据实际状态以及相关联资源的状态来实现实际状态,从而最终达到期望状态.
+
+operate crd : client > crd model -> apiserver -> api Aggregation -> crd api Aggregation > produce -> apiserver > client 
+
+API Aggregation
+
+Demo server restful client informer indexer storage mysql/etcd/ registry kubernetes api Aggregation
+
+client -req -> k8s-apiserver -> proxy -> demo-server -> operated -> k8s-apiserver -> client
+
+api聚合,是一种自己实现类似kubernetes的apiserver的服务端过程,在你自己的实现的服务端, 你可以用自己适合的任意的存储去存储你自定义的api资源模型,它是需要单独的运行在
+kubernetes中,并且在你的服务端的实现中需要自己去把你的服务注册到kubernetes的apiserver的api聚合器中, 当我我们去访问你自定义的api资源模型的时候,是kubernetes的
+apiserver中的api聚合器通过代理的方式,再次访问到你的自定义服务端中的api路由. 然后将操作结果返回给聚合器,在有聚合器返回给客户端.
+
+2. 让我们来聊聊operator
+
+operator是CRD和Controller组合实现的一种特例。它允许开发人员将特定应用程序的领域知识编码为Kubernetes API的扩展。
+
+Operator 是一种思想，它结合了特定的领域(软件)知识并通过CustomResourceDefinition（CRD）机制扩展了Kubernetes API，
+使用户像管理 Kubernetes 的内置资源(pod,deployment等)一样创建，配置和管理应用程序.
+Operator 是一个特定的应用程序的控制器，通过扩展 Kubernetes API 以代表 Kubernetes 用户创建，配置和管理复杂有状态应用程序的实例。
+通常包含资源模型定义和控制器,通过operator通常是为了实现某种特定软件(通常是有状态服务)的自动化运维.
+

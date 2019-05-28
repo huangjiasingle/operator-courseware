@@ -1,0 +1,37 @@
+etcd 备份和恢复
+
+备份:
+
+v2
+
+etcdctl backup --data-dir=..... --backup-dir=file 
+
+v3
+
+etcdctl snapshot save /tmp/snapshot.db 
+
+注意: 
+
+若使用 v3 备份数据时存在 v2 的数据则不影响恢复
+
+若使用 v2 备份数据时存在 v3 的数据则恢复失败
+
+if successed  upload backupfile to thirty part storage, may be we can zip the backup file. and then upload.
+
+if failed  update the backup crd status with backup status condition.
+
+1. etcd pod  exec etcd snapshot save xx.db (inside conatienr). > update etcdDump crd status.
+2. get xx.db operator conatiner  and then remve etcd container xx.db. > update etcdDump crd status.
+3. upload xx.db to storage, rm xx.db in operator container. > update etcdDump crd status.
+
+恢复:
+
+1. we should clean some related of the exsit etcd cluster info , include pvc , pod, statefulset, 
+and the create the some statefulset of the before
+
+
+2. 我打算这样做: 更新对应的statefulset, 增加一个initContainer 在initContainer中去增加恢复的逻辑.
+
+首先是下在备份文件, 然后执行etcdctl snapshot restore 命令, 将数据恢复到etcd的数据目录(etcd container和initcontainer共享一个pvc存储),
+然后在启动etcd
+

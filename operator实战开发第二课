@@ -1,0 +1,10 @@
+第二课
+1. 关于k8s常用lib库项目介绍
+   - api
+   - apimachinery
+   
+api项目概览
+api子项目主要是k8s中各个主要项目中通用的一些api的struct的定义.
+
+apimachinery项目概览.
+apimachinery子项目主要是k8s服务端和客户段项目都共同依赖的一些公共方法,struct,工具的定义. 主要是服务于kubernetes,client-go,apiserver这三个项目.

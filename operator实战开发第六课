@@ -1,0 +1,16 @@
+第六课
+1. operator开发框架介绍
+   1.1 kubebuilder介绍与使用
+   1.2 总结:对比operator-sdk和kubebuilder各自的注意事项以及优缺点
+
+对比operator-sdk和kubebuilder各自的注意事项以及优缺点
+
+共同点:
+operator-sdk 最初的版本是完全自己写的,并没有使用controller-runtime中的规范,后续的版本就基本和kubebuilder一样
+都是使用controller的规范去完成的. 其内部的逻辑处理流程完全一模一样.
+
+不同点: 
+operator-sdk 在命令行工具中, 缺失一部分功能, 比如: 指定项目的rep. 其项目相关的开发维护人员相对kubebuilder要多.
+
+kubebuilder  在命令行工具中功能比operator-sdk更加丰富. 是kubernetes官方项目.
+

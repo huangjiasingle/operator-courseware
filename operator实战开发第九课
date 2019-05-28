@@ -1,0 +1,11 @@
+github.com/huangjiasingle/app
+
+第七课
+1. opeartor实际项目讲解
+   1.1 mariadb-operator项目
+
+模拟一个完整应用的部署
+
+通常一个完整的应用由 一个service deplooy configmap secret,pv,pvc等构成.
+
+demo项目为了简单,一个完整的应用就由一个service+deployment构成.
